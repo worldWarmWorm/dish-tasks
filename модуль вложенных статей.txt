@@ -1,0 +1,49 @@
+Вложенные статьи - пример сайт ses-nsk.local
+
+protected\config\crud\equipments_sections.php+
+protected\config\crud\equipments_section_items.php+
+protected\config\crud.php+
+protected\config\urls.php+
+protected\components\base\BaseSectionsController.php - новый файл+
+protected\controllers\EquipmentsSectionsController.php - новый файл+
+protected\modules\admin\config\menu.php+
+protected\views\base\sections\_items.php - новый файл+
+protected\views\base\sections\_sections.php - новый файл+
+protected\views\base\sections\index.php - новый файл+
+protected\views\base\sections\section.php - новый файл+
+protected\views\base\sections\view.php - новый файл+
+protected\modules\admin\views\layouts\main.php+
+protected\modules\admin\views\layouts\login.php+
+protected\config\defaults.php+
+protected\modules\common\modules\crud\modules\admin\views\default\nestedset.php - новый файл+
+themes\template_1\css\template.less+
+protected\modules\common.1 копия protected\modules\common - - нужно только на локалке
+protected\modules\reviews.1 копия protected\modules\reviews - нужно только на локалке
+themes\template_1\js\scripts.js+
+protected\modules\common\widgets\form\TinyMceField.php+
+protected\modules\common\widgets\form\views\tinymce-field.php+
+protected\modules\feedback\configs\forms\callback2.php - новый файл (в бд нужно будет удалить form-callback2)+
+themes\template_1\views\layouts\main.php+
+protected\modules\common\modules\seo\ext\sef\components\rules\SefRule.php+
+protected\modules\admin\widget\EditWidget\TinyMCE.php+
+/themes/template_1/images/dealer.png - загрузить картинку+
+
+
+
+
+
+
+protected\modules\common\components\helpers\HFile.php
+protected\controllers\SiteController.php
+
+HFile::download(
+$model->certificatePdfBehavior->getFilename(true),
+null, false, false, null, 
+
+
+
+
+
+
+dev
+eDQVoZkM

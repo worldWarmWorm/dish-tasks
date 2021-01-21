@@ -1,0 +1,23 @@
+$('.count-down').click(function() {
+        var value = $(this).siblings('.amount-to-cart').val();
+
+        if (value > 1) {
+            $(this).siblings('.amount-to-cart').val(--value);
+        }
+    });
+
+    $('.count-up').click(function() {
+        var value = $(this).siblings('.amount-to-cart').val();
+
+        $(this).siblings('.amount-to-cart').val(++value);
+
+    });
+
+
+
+
+<div class="items-counter">
+				<button class="count-down">-</button>
+				<input type="text" class="amount-to-cart" id="js-product-count-<?= $data->id ?>" value="1">
+				<button class="count-up">+</button>
+			</div>

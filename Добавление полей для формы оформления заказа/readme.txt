@@ -1,0 +1,1 @@
+Пример вывода полей в публичке \protected\modules\DOrder\widgets\views\customer_form.php

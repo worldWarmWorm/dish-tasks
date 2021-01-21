@@ -1,0 +1,179 @@
+<!-- Сделать видимым только под админом -->
+
+<?php if(!Yii::app()->user->isGuest):?>
+<?php endif;?>
+
+<!-- корзина -->
+<div class="basket">
+    <a href="/cart">
+        <span class="metr dcart-total-count"><?= Yii::app()->cart->getTotalCount() ?></span>
+        <img src="img/basket.svg" alt="">
+    </a>
+</div>
+
+<!-- Цена товаров в корзине -->
+<span class="dcart-total-price"><?= HtmlHelper::priceFormat(Yii::app()->cart->getTotalPrice()); ?></span>
+
+<!-- политика конфиденциальности -->
+<?php ModuleHelper::Copyright() ?>
+<a href="/path" class="privacy-policy" target="_block">Политика конфиденциальности</a>
+
+<!-- /protected/config/params.php - исправить на 2019 
+после создать в админки страницу с заголовком и текстом "политика конфиденциальности", указать url из страницы с ошибкой 404
+-->
+
+<!-- обратный звонок -->
+<?php if (D::yd()->isActive('feedback')): ?>
+<a href="javascript:;" class="callback-button" data-src="#form-callback" data-fancybox>
+    <span>Заказать звонок</span>
+</a>
+<?php endif; ?>
+
+<!-- меню -->
+<?php
+    $this->widget('\menu\widgets\menu\MenuWidget', array(
+        'rootLimit' => D::cms('menu_limit'),
+        'cssClass' => ''
+    ));
+?>
+
+<!-- ссылка на whatsapp -->
+https://api.whatsapp.com/send?phone=79234567890
+
+<!-- infoblock -->
+<?php foreach (IBHelper::getElements(1) as $element): ?>
+<div class="banner-inner" style="background-image: url(<?= $element['preview'] ?>);">
+    <h1><?= $element['title'] ?></h1>
+    <?= $element['description'] ?>
+    <?= $element['props']['LINK'] ?>
+</div>
+<?php  endforeach; ?>
+
+<!-- Адрес, контактные данные -->
+<?= D::cms('address') ?>
+
+<!-- Слоган -->
+<?= D::cms('slogan') ?>
+
+<!-- Текст в подвале сайта -->
+<?= D::cms('privacy_policy_text') ?>
+
+<!-- Телефоны -->
+<a href="tel:<?= preg_replace('/[^0-9+]/', '', D::cms('phone')) ?>"><?= D::cms('phone') ?></a>
+<a href="tel:<?= preg_replace('/[^0-9+]/', '', D::cms('phone2')) ?>"><?= D::cms('phone2') ?></a>
+
+<!-- Почта -->
+<a href="mailto:<?= D::cms('emailPublic'); ?>"><?= D::cms('emailPublic'); ?></a>
+
+<!-- Контур -->
+<a href="http://kontur-lite.ru/" title="Создание сайтов в Новосибирске" target="_blank">Создание сайтов</a>
+<a href="http://kontur-promo.ru/" title="Продвижение сайтов в Новосибирске" target="_blank">Продвижение сайтов</a>
+
+
+
+<!-- Меню каталога -->
+<?php $this->widget('widget.ShopCategories.ShopCategories') ?>
+
+<!-- Виджет категорий каталога -->
+<? $this->widget('widget.catalog.CategoryListWidget'); ?>
+<? $this->widget('widget.catalog.CategoryListWidget', ['view'=>'category_list2']); ?>
+
+<!-- Поиск -->
+<? $this->widget('widget.search.SearchWidget', ['submit' => '', 'view' => 'search_form_flex']); ?>
+
+<!-- Акции/Новости/Статьи -->
+<?php $this->widget('widget.Events.Events') ?>
+<?php $this->widget('\widget\sale\SaleList') ?>
+
+<?php if (D::yd()->isActive('sale')): ?>
+<div class="module module-action">
+    <?php $this->widget('\widget\sale\SaleList', array(
+            'showTitle' => false,
+            'showSaleTitle' => true,
+            'showLinkAll' => true,
+            'wrapperTagName' => false,
+            'htmlOptions' => array('class' => 'actions'),
+            'linkAllOptions' => array('class' => 'all_events')
+        )) ?>
+</div>
+<?php endif ?>
+
+<!-- хлебные крошки -->
+<?php
+    $this->widget('\ext\D\breadcrumbs\widgets\Breadcrumbs', array('breadcrumbs' => $this->breadcrumbs->get()));
+?>
+
+<!--  Виджет отзывов о компании -->
+<? $this->widget('\reviews\widgets\ReviewsList'); ?>
+
+<!-- Ресайз изображений -->
+<?= ResizeHelper::resize($src, 306, 192) ?>
+
+<?php foreach (IBHelper::getElements(1) as $element): ?>
+<a data-fancybox="group" href="<?= $element['preview'] ?>" title="<?=$img->description?>">
+    <img src="<?=ResizeHelper::resize($element['preview'], 79, 81)?>" alt="">
+    <?= $event->previewImg ?>
+    <?=ResizeHelper::resize($event->previewImg, 275, 185)?>
+</a>
+<?php endforeach; ?>
+
+<div class="product__image product-block">
+
+    <?=CHtml::link(CHtml::image(ResizeHelper::resize($data->getSrc(),555,247)), $productUrl); ?>
+</div>
+
+<!-- Вывод картинки через css -->
+<div class="sitebar-images" style="background-image: url(<?= $category->mainImageBehavior->getTmbSrc(350,250); ?>) ">
+</div>
+
+<!-- Только для главной -->
+<?php if ($this->isIndex()): ?>
+Текст
+<?php endif ?>
+
+<!-- Популярные товары -->
+<?php if (D::cms('shop_enable_carousel')) $this->widget('widget.catalog.ProductCarouselWidget'); ?>
+
+<!-- Скрипт для отправки названия товара, который хотели заказать -->
+
+<a href="javascript:;" class="offer" data-title="<?=$element['title']?>" class="callback-button"
+    data-src="#form-callback1" data-fancybox>Заказать</a>
+
+$('[data-title]').on('click', function() {
+$('[name="feedback_models_FeedbackModel[product]"]').val($(this).data('title'));
+});
+
+<!-- Поиск -->
+<? $this->widget('widget.search.SearchWidget', ['submit'=>'', 'view'=>'search_form_flex']); ?>
+
+<!-- новостной блок для слайдера -->
+
+<div class="frame">
+    <ul class="slidee">
+
+        <?php
+	$i = 1; 
+	foreach($events as $event): 
+	?>
+        <? if(($i + 2)%3 == 0): ?>
+        <li>
+            <div class="slide">
+                <? endif ?>
+
+                <div class="delivery-discription">
+                    <h4><?=$event->title; ?></h4>
+                    <p><?=$event->intro; ?></p>
+                    <small><?=$event->date; ?></small>
+                </div>
+
+                <? if($i%3 == 0): ?>
+            </div>
+        </li>
+        <? endif ?>
+
+        <?php
+	$i++;
+    endforeach; 
+	?>
+    </ul>
+</div>

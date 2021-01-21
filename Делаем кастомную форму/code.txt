@@ -1,0 +1,90 @@
+<?php
+
+/** @var FeedbackWidget $this */
+/** @var FeedbackFactory $factory */
+
+use common\components\helpers\HYii as Y;
+
+Y::js(
+    'feedback' . $this->getHash(),
+    'var feedback' . $this->getHash() . '=FeedbackWidget.clone(FeedbackWidget);feedback' . $this->getHash() . '.init("' . $this->id . '");'
+);
+?>
+
+<?php $this->title = 'Подберем для вас оптимальное решение'; ?>
+
+<div id="<?php echo $this->id; ?>" class="form">
+    <div class="container">
+        <?php if ($this->title) : ?>
+            <h2><?php echo $this->title; ?></h2>
+            <span>Заполните анкету и наш менеджер свяжется с вами</span>
+        <?php endif; ?>
+
+        <div class="form__wrap">
+            <div class="form__info">
+                <p>Или свяжитесь с нами по номеру</p>
+                <a href="tel:<?= preg_replace('/[^0-9+]/', '', D::cms('phone')) ?>"><?= D::cms('phone') ?></a>
+            </div>
+            <?php $form = $this->beginWidget('CActiveForm', array(
+                'id' =>  $this->getFormId(),
+                'action' => $this->getFormAction(),
+                'enableClientValidation' => true,
+                'enableAjaxValidation' => true,
+                'clientOptions' => array(
+                    'validateOnSubmit' => true,
+                    'validateOnChange' => false,
+                    'afterValidate' => 'js:feedback' . $this->getHash() . '.afterValidate',
+                ),
+                // 'htmlOptions'=>array('class'=>'form')
+            )); ?>
+
+            <?php echo CHtml::hiddenField('formId', $this->getFormId()); ?>
+
+            <? if(is_callable($this->onBefore)) call_user_func($this->onBefore, $factory->getModelFactory()->getModel()); ?>
+
+            <? $fields = $factory->getModelFactory()->getAttributes(); ?>
+
+            <div class="feedback-body">
+
+                <div class="form__row">
+                    <div class="form__col">
+                        <label>
+                            Имя
+                            <?= $fields['name']->getModel()->widget($factory, $form, $this->params); ?>
+                        </label>
+                    </div>
+                    <div class="form__col">
+                        <label>
+                            Телефон*
+                            <?= $fields['phone']->getModel()->widget($factory, $form, $this->params); ?>
+                        </label>
+                    </div>
+                    <div class="form__col">
+                        <label>
+                            Почта
+                            <?= $fields['mail']->getModel()->widget($factory, $form, $this->params); ?>
+                        </label>
+                    </div>
+                </div>
+                <div class="form__msg">
+                    <label>
+                        Комментарий
+                        <?= $fields['comment']->getModel()->widget($factory, $form, $this->params); ?>
+                    </label>
+
+                </div>
+                <div class="form__text">
+                    <div class="form__text_check">
+                        <?= $fields['privacy_policy']->getModel()->widget($factory, $form, $this->params); ?>
+
+                    </div>
+                    <?php echo CHtml::submitButton($factory->getOption('controls.send.title', 'Отправить'), array(
+                        'class' => 'feedback-submit-button btn',
+                        'id' => $factory->getModelFactory()->getModel()->recaptchaBehavior->attachReCaptchaBySubmitButton()
+                    )); ?>
+                </div>
+            </div>
+        </div>
+        <?php $this->endWidget(); ?>
+    </div>
+</div>
